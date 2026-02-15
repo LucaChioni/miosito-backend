@@ -19,8 +19,8 @@ def get_conn():
 def access_secrets(apiKey: str):
     with get_conn() as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT api_key FROM api_keys LIMIT 1;")
+            cur.execute("SELECT api_key FROM api_keys WHERE api_key = %s LIMIT 1;", [apiKey])
             result = cur.fetchone()
-    access = result is not None and result[0] == apiKey
+    access = result is not None
 
     return {"success": True, "access": access}
